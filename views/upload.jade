@@ -1,2 +1,16 @@
 h1 Upload a torrent
-
+form(method='post', action='/upload', enctype='multipart/form-data')
+  table
+    tr
+      th Torrent
+      td
+        input(type='file', name='torrent')
+        br 
+        input
+    tr
+      th Category
+      td stuff
+    tr
+      th
+      td
+        input(type='submit', value='upload')

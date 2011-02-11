@@ -4,9 +4,12 @@
  */
 require('joose')
 require('joosex-namespace-depended')
-require('hash')
 
+var crypto = require('crypto');
 var express = require('express');
+var form = require('connect-form');
+var fs = require('fs');
+var bencode = require('dht-bencode');
 
 
 // Models
@@ -29,8 +32,9 @@ app.configure(function(){
   app.use(express.cookieDecoder());
   app.use(express.session({secret:'temp'}));
   app.use(express.methodOverride());
+  app.use(form({keepExtensions: true}));
   app.use(app.router);
-  app.use(express.staticProvider(__dirname + '/public'));
+  app.use(express.staticProvider( + '/public'));
 });
 
 app.configure('development', function(){
@@ -47,7 +51,6 @@ var salt = 'temp'
 // Routes
 
 app.get('/', function(req, res){
-  console.log(req.session.user);
   Torrent.find({}, function(err, torrents) { 
     res.render('browse', {
       locals: {
@@ -73,7 +76,10 @@ app.post('/login', function(req, res) {
     res.redirect('/login');
     return;
   }
-  User.findOne({username: req.body.username, password: Hash.sha1(salt + req.body.password)}, function(err, u) {
+  var hasher = crypto.createHash('sha1');
+  hasher.update(salt + req.body.password);
+
+  User.findOne({username: req.body.username, password: hasher.digest('hex')}, function(err, u) {
     if(!u) {
       console.log('f')
       req.flash('error', "Invalid username/password combination");
@@ -96,6 +102,20 @@ app.get('/upload', function(req, res) {
     locals: {
       title: 'Upload a torrent',
     }
+  });
+});
+
+app.post('/upload', function(req, res) {
+  req.form.complete(function(err, fields, files) {
+    fs.readFile(files.torrent.path, function(err, data) {
+      var s = bencode.bdecode(data);
+      var hasher = crypto.createHash('sha1');
+      hasher.update(bencode.bencode(s.info));
+      var infohash = hasher.digest('hex');
+      
+    });
+    //fs.rename(files.torrent.path, __dirname + '/' +  
+    res.redirect('/');
   });
 });
 
