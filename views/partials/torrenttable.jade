@@ -8,12 +8,12 @@ table
     th Leechers
     th Snatches
   - for (var t in torrents)
-  tr
-    td a
-    td= torrents[t].name
-    td a
-    td a
-    td a
-    td a
-    td a
+    tr
+      td= torrents[t].category
+      td= torrents[t].name
+      td= torrents[t].date
+      td= torrents[t].filesize
+      td a
+      td a
+      td= torrents[t].snatches
 

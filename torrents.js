@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema
-var ObjectId = Schema.ObjectId;
+var ObjectID = Schema.ObjectId;
 
 var torrentSchema = new Schema({
   name : String,
   uploader : ObjectID,
   group : ObjectID,
-  date : { type: Date, default: Date.now},
+  date : Date,
   filesize : Number,
-  snatched: Number
+  snatched: Number,
   category : ObjectID
 });
 
