@@ -1,0 +1,23 @@
+h1 Login to Nyaa2
+- if (flash.error)
+  .error= flash.error
+- if (flash.info)
+  .info= flash.info
+form(action="/login", method="post")
+  table
+    tr
+      td
+        label(for='username') Username:
+      td
+        input(name='username')
+    tr
+      td
+        label(for='password') Password:
+      td
+        input(name='password', type='password')
+    tr
+      td
+      td
+        input(type='submit', value='Login')
+
+a(href='#') Forgotten your username or password?

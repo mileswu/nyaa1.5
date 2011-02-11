@@ -4,9 +4,15 @@
  */
 
 var express = require('express');
+
+// Models
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/nyaa2');
 var Torrent = require('./torrents.js').Torrent(db);
+var Category = require('./categories.js').Category(db);
+var User = require('./users.js').User(db);
+
+
 
 var app = module.exports = express.createServer();
 

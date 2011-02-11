@@ -10,9 +10,6 @@ var torrentSchema = new Schema({
   filesize : Number,
   snatched: Number
   category : ObjectID
-
-
-
 });
 
 mongoose.model('Torrent', torrentSchema);
